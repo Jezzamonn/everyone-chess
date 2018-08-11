@@ -6,6 +6,7 @@ import { Piece, TILE_SIZE } from "./contants";
 export default class Player {
 
     constructor(id, x = 0, y = 0, type = Piece.UNKNOWN) {
+        // TODO: Public & Private ID
         this.id = id;
         this.x = x;
         this.y = y;

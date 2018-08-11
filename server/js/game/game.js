@@ -8,45 +8,48 @@ import { Piece } from "./contants";
 export default class Game {
 
 	constructor() {
-        this.players = [
+        this.world = new World();
+        this.world.players = [
 			new Player(0, 1, 1, Piece.QUEEN),
 			new Player(1, 3, 1, Piece.KING),
 			new Player(2, 4, 1, Piece.PAWN),
 			new Player(3, 5, 1, Piece.KNIGHT),
 		];
-        this.world = new World();
 	}
 
 	move(id, x, y) {
-		for (let player of this.players) {
+		for (let player of this.world.players) {
 			if (player.id == id) {
 				player.x = x;
 				player.y = y;
 				// Kill any other players on the same square?
 
-				for (let otherPlayer of this.players) {
+				const touchingPlayers = this.world.getPlayersAt(player.x, player.y);
+				for (let otherPlayer of touchingPlayers) {
 					if (otherPlayer === player) {
 						continue;
 					}
-
-					if (otherPlayer.x == player.x && otherPlayer.y == player.y) {
-						// KILL!
-						otherPlayer.dead = true;
-					}
+					otherPlayer.dead = true;
 				}
 			}
 		}
-
-		// remove dead players
-		this.players = this.players.filter(p => !p.dead);
 	}
 
 	// For debugging really
 	render(context) {
 		this.world.render(context);
-		for (let player of this.players) {
-			player.render(context);
+	}
+
+	// Fairly obviously for debugging :)
+	toString() {
+		let out = '';
+		for (let y = 0; y < this.world.height; y ++) {
+			for (let x = 0; x < this.world.width; x ++) {
+				out += this.world.getDebugCharAt(x, y);
+			}
+			out += '\n';
 		}
+		return out;
 	}
 
 }

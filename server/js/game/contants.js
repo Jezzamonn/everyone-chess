@@ -10,7 +10,7 @@ export const Tile = deepFreeze({
 export const Piece = deepFreeze({
     UNKNOWN: {
         id: 0,
-        letter: '.',
+        letter: '?',
     },
     PAWN: {
         id: 1,

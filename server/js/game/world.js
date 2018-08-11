@@ -11,7 +11,8 @@ export default class World {
 
 		this.tiles = [];
 		this.powerups = [];
-		// ?? Players
+		this.players = [];
+
 		for (let y = 0; y < this.height; y ++) {
 			this.tiles[y] = [];
 			this.powerups[y] = [];
@@ -28,6 +29,39 @@ export default class World {
 		}
 	}
 
+	removeDeadPlayers() {
+		this.players = this.players.filter(player => !player.dead);
+	}
+
+	getPlayersAt(x, y) {
+		return this.players.filter(player => player.x == x && player.y == y)
+	}
+
+	getPlayerById(id) {
+		const players = this.players.filter(player => player.id == id);
+		if (players.length == 0) {
+			return null;
+		}
+		return players[0];
+	}
+
+	getDebugCharAt(x, y) {
+		const players = this.getPlayersAt(x, y);
+		if (players.length > 0) {
+			// should only be 1 but just in case
+			return players[0].type.letter;
+		}
+		return '#';
+	}
+
+	getTileAt(x, y) {
+		return this.tiles[y][x];
+	}
+
+	setTileAt(x, y, value) {
+		this.tiles[y][x] = value;
+	}
+
 	update() {
 		// TODO: Some updating logic?
 	}
@@ -36,6 +70,14 @@ export default class World {
 	 * @param {CanvasRenderingContext2D} context 
 	 */
 	render(context) {
+		this.renderTiles(context);
+		this.renderPlayers(context);
+	}
+
+	/**
+	 * @param {CanvasRenderingContext2D} context 
+	 */
+	renderTiles(context) {
 		const pad = 0.05;
 		const padWidth = 1 - 2 * pad;
 		for (let y = 0; y < this.height; y ++) {
@@ -50,6 +92,15 @@ export default class World {
 						padWidth * TILE_SIZE);
 				}
 			}
+		}
+	}
+
+	/**
+	 * @param {CanvasRenderingContext2D} context 
+	 */
+	renderPlayers(context) {
+		for (let player of this.players) {
+			player.render(context);
 		}
 	}
 
