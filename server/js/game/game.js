@@ -9,12 +9,7 @@ export default class Game {
 
 	constructor() {
         this.world = new World();
-        this.world.players = [
-			new Player(0, 1, 1, Piece.QUEEN),
-			new Player(1, 3, 1, Piece.KING),
-			new Player(2, 4, 1, Piece.PAWN),
-			new Player(3, 5, 1, Piece.KNIGHT),
-		];
+        this.world.players = [];
 	}
 
 	move(id, x, y) {

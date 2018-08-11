@@ -1,4 +1,7 @@
 import deepFreeze from 'deep-freeze';
+import Random from 'random-js';
+
+export const random = Random();
 
 export const TILE_SIZE = 20;
 

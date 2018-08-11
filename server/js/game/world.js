@@ -51,7 +51,7 @@ export default class World {
 			// should only be 1 but just in case
 			return players[0].type.letter;
 		}
-		return '#';
+		return '.';
 	}
 
 	getTileAt(x, y) {
@@ -101,6 +101,14 @@ export default class World {
 	renderPlayers(context) {
 		for (let player of this.players) {
 			player.render(context);
+		}
+	}
+
+	toObject() {
+		return {
+			tiles: this.tiles,
+			powerups: this.powerups,
+			players: this.players,
 		}
 	}
 
