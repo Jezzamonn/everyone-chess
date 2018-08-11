@@ -8,12 +8,9 @@ export default class Player {
     constructor(id, x = 0, y = 0, type = Piece.UNKNOWN) {
         this.id = id;
         this.x = x;
-        this.y = x;
+        this.y = y;
         this.type = type;
-	}
-
-	update() {
-		// TODO: Some updating logic
+        this.dead = false;
 	}
 
 	/**

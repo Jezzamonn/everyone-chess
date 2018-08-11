@@ -4,10 +4,11 @@ export default class Controller {
 
 	constructor() {
 		this.game = new Game();
+		window.game = this.game;
 	}
 
 	update() {
-		this.game.update();
+		// NOTHING
 	}
 
 	render(context) {
