@@ -1,15 +1,17 @@
+import Game from "./game/game";
+
 export default class Controller {
 
 	constructor() {
-
+		this.game = new Game();
 	}
 
-	update(dt) {
-		// TODO: Some updating logic
+	update() {
+		this.game.update();
 	}
 
 	render(context) {
-		// TODO: Some rendering logic
+		this.game.render(context);
 	}
 
 }

@@ -1,0 +1,28 @@
+import { Piece, TILE_SIZE } from "./contants";
+
+/**
+ * Main class for handling the game logic
+ */
+export default class Player {
+
+    constructor(id, x = 0, y = 0, type = Piece.UNKNOWN) {
+        this.id = id;
+        this.x = x;
+        this.y = x;
+        this.type = type;
+	}
+
+	update() {
+		// TODO: Some updating logic
+	}
+
+	/**
+	 * @param {CanvasRenderingContext2D} context
+	 */
+	render(context) {
+        context.fillStyle = 'red';
+        context.font = '17px Arial';
+        context.fillText(this.type.letter, TILE_SIZE * this.x + 4, TILE_SIZE * this.y + 17);
+	}
+
+}

@@ -7,11 +7,9 @@ let context = canvas.getContext('2d');
 const SIZE = 500;
 
 let scale = 1;
-let lastTime;
 let controller;
 
 function init() {
-	lastTime = Date.now();
 	controller = new Controller();
 
 	handleResize();
@@ -29,10 +27,7 @@ function everyFrame() {
 }
 
 function update() {
-	let curTime = Date.now();
-	let dt = (curTime - lastTime) / 1000;
-	controller.update(dt);
-	lastTime = curTime;
+	controller.update();
 }
 
 function render() {
@@ -41,11 +36,10 @@ function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
 	// Set origin to middle and scale canvas
-	context.translate(canvas.width / 2, canvas.height / 2);
 	context.scale(scale, scale);
 
 	controller.render(context);
-}
+}8
 
 function handleResize(evt) {
 	let pixelRatio = window.devicePixelRatio || 1;
