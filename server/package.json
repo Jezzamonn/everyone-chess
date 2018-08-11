@@ -1,10 +1,10 @@
 {
-  "name": "",
+  "name": "chess-royale-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server for a chess type game",
   "main": "index.js",
   "watch": {
-    "webpack": "js/*.js"
+    "webpack": "js/**/*.js"
   },
   "scripts": {
     "start": "http-server",
@@ -21,7 +21,10 @@
     "babel-preset-env": "^1.6.1",
     "http-server": "^0.11.1",
     "npm-watch": "^0.3.0",
-    "reload": "^2.3.0",
+    "reload": "^2.3.1",
     "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "deep-freeze": "0.0.1"
   }
 }
