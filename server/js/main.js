@@ -39,7 +39,7 @@ function render() {
 	context.scale(scale, scale);
 
 	controller.render(context);
-}8
+}
 
 function handleResize(evt) {
 	let pixelRatio = window.devicePixelRatio || 1;
