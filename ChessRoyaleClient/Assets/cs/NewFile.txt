@@ -1,26 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using Quobject.SocketIoClientDotNet.Client;
-using Newtonsoft.Json;
-
-public class SocketIoClient : MonoBehaviour
-{
-    public string serverURL = "http://localhost:3000";
-
-    protected Socket socket = null;
-
-    void Destroy()
-    {
-        DoClose();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        // Lets just test json parsing for the mo
-        string somesstring = @"{
+﻿{
   ""tiles"": [
     [
       1,
@@ -1247,46 +1225,4 @@ public class SocketIoClient : MonoBehaviour
       ""dead"": false
     }
   ]
-}";
-        GameData game = JsonConvert.DeserializeObject<GameData>(somesstring);
-
-        DontDestroyOnLoad(gameObject);
-        DoOpen();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void DoOpen()
-    {
-        if (socket == null)
-        {
-            socket = IO.Socket(serverURL);
-            socket.On(Socket.EVENT_CONNECT, () =>
-            {
-                Debug.Log("Socket.IO connected.");
-            });
-
-            socket.On("world-update", (data) =>
-            {
-                Debug.Log(data);
-                //// TODO: Parse data here, save it and let something else have at it?
-                //object someGreatData = JsonConvert.DeserializeObject((string)data);
-                //Debug.Log(someGreatData);
-            });
-        }
-    }
-
-    void DoClose()
-    {
-        if (socket != null)
-        {
-            socket.Disconnect();
-            socket = null;
-        }
-    }
-
 }
