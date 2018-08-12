@@ -12,10 +12,14 @@ export default class DummyController {
     }
     
     newPlaya() {
+        if (this.lastIndex < 20) {
+            this.lastIndex ++;
+            return;
+        }
         const newPlayer = new Player(
             this.lastIndex,
-            random.integer(0, this.game.world.width),
-            random.integer(0, this.game.world.height),
+            random.integer(0, this.game.world.width-1),
+            random.integer(0, this.game.world.height-1),
             random.pick([Piece.PAWN, Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
         )
         this.lastIndex ++;

@@ -27,7 +27,7 @@ setInterval(
         console.log(game.toString());
         io.sockets.emit('world-update', game.world.toObject());
     }, 
-    1000
+    500
 );
 
 server.listen(3000, function(){
