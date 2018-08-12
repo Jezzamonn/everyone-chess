@@ -19,6 +19,11 @@ export default class DummyController {
             random.pick([Piece.PAWN, Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
         )
         this.lastIndex ++;
+
+        // Kill all fools foolish enough to occupy this space
+        this.game.world.getPlayersAt(newPlayer.x, newPlayer.y).forEach(p => p.dead = true);
+        this.game.world.removeDeadPlayers();
+
         this.game.world.players.push(newPlayer);
     }
 

@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 188508722}
   - component: {fileID: 188508723}
   m_Layer: 0
-  m_Name: GameLoopThing
+  m_Name: SocketBoy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverURL: http://localhost:3000
+  GameData:
+    players: []
 --- !u!1 &413909617
 GameObject:
   m_ObjectHideFlags: 0

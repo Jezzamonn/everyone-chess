@@ -37,14 +37,7 @@ export default class Game {
 
 	// Fairly obviously for debugging :)
 	toString() {
-		let out = '';
-		for (let y = 0; y < this.world.height; y ++) {
-			for (let x = 0; x < this.world.width; x ++) {
-				out += this.world.getDebugCharAt(x, y);
-			}
-			out += '\n';
-		}
-		return out;
+		return this.world.toString();
 	}
 
 }

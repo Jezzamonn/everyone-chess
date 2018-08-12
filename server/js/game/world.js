@@ -1,4 +1,4 @@
-import { TILE_SIZE, Tile } from "./contants";
+import { TILE_SIZE, Tile, random } from "./contants";
 
 /**
  * Main class for handling the game logic
@@ -17,14 +17,16 @@ export default class World {
 			this.tiles[y] = [];
 			this.powerups[y] = [];
 			for (let x = 0; x < this.width; x ++) {
-				this.tiles[y][x] = null;
+				this.tiles[y][x] = Tile.EMPTY;
 				this.powerups[y][x] = null;
 			}
 		}
 
 		for (let y = 0; y < this.height; y ++) {
 			for (let x = 0; x < this.width; x ++) {
-				this.tiles[y][x] = Tile.GROUND;
+				if (random.bool(0.9)) {
+					this.tiles[y][x] = Tile.GROUND;
+				}
 			}
 		}
 	}
@@ -51,7 +53,10 @@ export default class World {
 			// should only be 1 but just in case
 			return players[0].type.letter;
 		}
-		return '.';
+		if (this.getTileAt(x, y) == Tile.GROUND) {
+			return '.';
+		}
+		return ' ';
 	}
 
 	getTileAt(x, y) {
@@ -110,6 +115,18 @@ export default class World {
 			powerups: this.powerups,
 			players: this.players,
 		}
+	}
+
+	// Fairly obviously for debugging :)
+	toString() {
+		let out = '';
+		for (let y = 0; y < this.height; y ++) {
+			for (let x = 0; x < this.width; x ++) {
+				out += this.getDebugCharAt(x, y);
+			}
+			out += '\n';
+		}
+		return out;
 	}
 
 }

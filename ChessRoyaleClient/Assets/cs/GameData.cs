@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 [Serializable]
 public class GameData
 {
@@ -14,5 +13,15 @@ public class GameData
 [Serializable]
 public class PlayerData
 {
-    public int? id;
+    public int x;
+    public int y;
+    public int id;
+    public PieceTypeData type;
+}
+
+[Serializable]
+public class PieceTypeData
+{
+    public int id;
+    public char letter;
 }

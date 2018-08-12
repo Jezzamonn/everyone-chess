@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65746116764000898}
   - component: {fileID: 23674355484862176}
   m_Layer: 0
-  m_Name: OddTile
+  m_Name: EvenTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
