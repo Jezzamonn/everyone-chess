@@ -10,6 +10,8 @@ export default class DummyController {
         this.game = game;
         this.lastIndex = 0;
 
+        this.ownedPlayers = [];
+
         this.waitCount = 0;
     }
 
@@ -32,23 +34,17 @@ export default class DummyController {
     }
     
     newPlaya() {
-        const newPlayer = new Player(
-            this.lastIndex,
-            random.integer(0, this.game.world.width-1),
-            random.integer(0, this.game.world.height-1),
-            random.pick([Piece.PAWN, Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
-        )
+        const player = this.game.addPlayer(this.lastIndex);
+        if (player == null) {
+            return;
+        }
+        this.ownedPlayers.push(player);
         this.lastIndex ++;
-
-        // Kill all fools foolish enough to occupy this space
-        this.game.world.getPlayersAt(newPlayer.x, newPlayer.y).forEach(p => p.dead = true);
-        this.game.world.removeDeadPlayers();
-
-        this.game.world.players.push(newPlayer);
     }
 
     movePlaya() {
-        const player = random.pick(this.game.world.players);
+        this.ownedPlayers = this.ownedPlayers.filter(player => !player.dead);
+        const player = random.pick(this.ownedPlayers);
         const movement = random.pick([
             {x: 1, y: 0},
             {x: -1, y: 0},

@@ -27,39 +27,53 @@ public class SocketIoClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DoOpen()
     {
-        if (socket == null)
+        if (socket != null)
         {
-            socket = IO.Socket(serverURL);
-            socket.On(Socket.EVENT_CONNECT, () =>
-            {
-            });
-
-            socket.On("world-update", (data) =>
-            {
-                GameData = JsonConvert.DeserializeObject<GameData>(data.ToString());
-            });
+            return;
         }
+        socket = IO.Socket(serverURL);
+        socket.On(Socket.EVENT_CONNECT, () =>
+        {
+            // ? On disconnect?
+        });
+
+        socket.On("world-update", (data) =>
+        {
+            GameData = JsonConvert.DeserializeObject<GameData>(data.ToString());
+        });
     }
 
-    public void DoMove(int id, Vector2 move) {
-        if (socket != null) {
-            // Who knows how this will be handled haha
-            socket.Emit("do-move", id, move.x, move.y);
+    public void DoMove(string id, Vector2 move)
+    {
+        if (socket == null)
+        {
+            return;
         }
+        socket.Emit("do-move", id, move.x, move.y);
+    }
+
+    public void AddPlayer(string id)
+    {
+        if (socket == null)
+        {
+            return;
+        }
+        socket.Emit("add-player", id);
     }
 
     void DoClose()
     {
-        if (socket != null)
+        if (socket == null)
         {
-            socket.Disconnect();
-            socket = null;
+            return;
         }
+        socket.Disconnect();
+        socket = null;
     }
 
 }

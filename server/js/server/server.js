@@ -23,9 +23,17 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
   
     socket.on('do-move', (id, x, y) => {
+        // Totally unverified, in many ways :) :) :)
         game.move(id, x, y);
 
         // world update? Could be bad haha
+        io.sockets.emit('world-update', game.world.toObject());
+    });
+
+    socket.on('add-player', (id) => {
+        game.addPlayer(id);
+
+        // again, maybe consider buffering these
         io.sockets.emit('world-update', game.world.toObject());
     });
 });
@@ -34,7 +42,7 @@ io.on('connection', (socket) => {
 setInterval(
     () => {
         controller.doAction();
-        // console.log(game.toString());
+        console.log(game.toString());
         io.sockets.emit('world-update', game.world.toObject());
     }, 
     500

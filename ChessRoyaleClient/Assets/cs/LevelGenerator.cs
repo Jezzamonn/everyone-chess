@@ -98,11 +98,19 @@ public class LevelGenerator : MonoBehaviour
         }
         players = players.Where(p => !p.Dead).ToList();
 
-        // Update currently controlled player. Also works if destroyed, surprisingly
-        if (playerController.Player == null && players.Count > 0) {
-            playerController.Player = players[0];
+        Piece controlledPlayer = players.SingleOrDefault(p => p.Id == playerController.Id);
+        if (controlledPlayer != null) {
+            // Should be ok to constantly set this?
+            playerController.Player = controlledPlayer;
         }
-
+        // Update currently controlled player. Also works if destroyed, surprisingly
+        if (playerController.Player == null) {
+            // Request a new player?
+            string id = System.Guid.NewGuid().ToString();
+            playerController.Id = id;
+            playerController.Player = null;
+            socketBoy.AddPlayer(id);
+        }
     }
 
     void ClearPlayers() {

@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 
     public SelectSquare SelectSquare;
     public Piece Player;
+    public string Id;
 
     List<SelectSquare> selectSquares = new List<SelectSquare>();
     private SocketIoClient socketBoy;

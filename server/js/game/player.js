@@ -21,6 +21,6 @@ export default class Player {
         context.fillStyle = 'red';
         context.font = '17px Arial';
         context.fillText(this.type.letter, TILE_SIZE * this.x + 4, TILE_SIZE * this.y + 17);
-	}
+    }
 
 }

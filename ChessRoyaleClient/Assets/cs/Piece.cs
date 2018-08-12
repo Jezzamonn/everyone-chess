@@ -6,7 +6,7 @@ public class Piece : MonoBehaviour {
 
     public PieceType Type;
     public string Name;
-    public int Id;
+    public string Id;
     public bool Dead;
 
     // We gonna slurp to this one
