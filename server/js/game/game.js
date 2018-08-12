@@ -28,6 +28,7 @@ export default class Game {
 				}
 			}
 		}
+		this.world.removeDeadPlayers();
 	}
 
 	// For debugging really

@@ -27,13 +27,15 @@ public class LevelGenerator : MonoBehaviour
 
     private SocketIoClient socketBoy;
     private GameData lastGameData;
-    private Camera camera;
+    private Camera theMainCamera;
+    private PlayerController playerController;
 
     // Use this for initialization
     void Start()
     {
         socketBoy = FindObjectOfType<SocketIoClient>();
-        camera = Camera.main;
+        playerController = FindObjectOfType<PlayerController>();
+        theMainCamera = Camera.main;
 
         possiblePieces = new Dictionary<char, Piece>
         {
@@ -95,6 +97,12 @@ public class LevelGenerator : MonoBehaviour
             }
         }
         players = players.Where(p => !p.Dead).ToList();
+
+        // Update currently controlled player. Also works if destroyed, surprisingly
+        if (playerController.Player == null && players.Count > 0) {
+            playerController.Player = players[0];
+        }
+
     }
 
     void ClearPlayers() {
@@ -133,6 +141,10 @@ public class LevelGenerator : MonoBehaviour
             lastGameData = socketBoy.GameData;
         }
 
+        UpdateCamera();
+    }
+
+    void UpdateCamera() {
         // Update camera to center of players
         if (players.Count > 0)
         {
@@ -142,10 +154,9 @@ public class LevelGenerator : MonoBehaviour
             float maxZ = players.Max(p => p.transform.position.z);
             Vector3 newPosition = new Vector3(
                 (minX + maxX) / 2,
-                camera.transform.position.y,
+                theMainCamera.transform.position.y,
                 (minZ + maxZ) / 2);
-            camera.transform.position = Vector3.Lerp(camera.transform.position, newPosition, 0.1f);
+            theMainCamera.transform.position = Vector3.Lerp(theMainCamera.transform.position, newPosition, 0.1f);
         }
-
     }
 }

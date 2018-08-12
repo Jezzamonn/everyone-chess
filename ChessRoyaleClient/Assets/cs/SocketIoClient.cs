@@ -46,6 +46,13 @@ public class SocketIoClient : MonoBehaviour
         }
     }
 
+    public void DoMove(int id, Vector2 move) {
+        if (socket != null) {
+            // Who knows how this will be handled haha
+            socket.Emit("do-move", id, move.x, move.y);
+        }
+    }
+
     void DoClose()
     {
         if (socket != null)

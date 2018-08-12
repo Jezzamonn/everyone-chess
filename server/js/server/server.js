@@ -17,14 +17,24 @@ let io = new SocketIO(server);
 // TODO: Socket io somehow?
 
 let game = new Game();
-console.log(game.toString());
-
 let controller = new DummyController(game);
+
+io.on('connection', (socket) => {
+    // console.log('a user connected');
+  
+    socket.on('do-move', (id, x, y) => {
+        game.move(id, x, y);
+
+        // world update? Could be bad haha
+        io.sockets.emit('world-update', game.world.toObject());
+    });
+});
+
 
 setInterval(
     () => {
         controller.doAction();
-        console.log(game.toString());
+        // console.log(game.toString());
         io.sockets.emit('world-update', game.world.toObject());
     }, 
     500
