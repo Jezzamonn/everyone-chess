@@ -12,17 +12,17 @@ public class LevelGenerator : MonoBehaviour
     public Transform OddTile;
     public Transform EvenTile;
 
-    public Transform Pawn;
-    public Transform Rook;
-    public Transform Bishop;
-    public Transform Knight;
-    public Transform Queen;
-    public Transform King;
+    public Piece Pawn;
+    public Piece Rook;
+    public Piece Bishop;
+    public Piece Knight;
+    public Piece Queen;
+    public Piece King;
 
     // TODO: replace w/ Piece type
-    private Dictionary<char, Transform> possiblePieces;
+    private Dictionary<char, Piece> possiblePieces;
 
-    private List<Transform> players;
+    private List<Piece> players;
     private List<List<int?>> tiles;
 
     private SocketIoClient socketBoy;
@@ -35,7 +35,7 @@ public class LevelGenerator : MonoBehaviour
         socketBoy = FindObjectOfType<SocketIoClient>();
         camera = Camera.main;
 
-        possiblePieces = new Dictionary<char, Transform>
+        possiblePieces = new Dictionary<char, Piece>
         {
             {'P', Pawn},
             {'R', Rook},
@@ -44,7 +44,7 @@ public class LevelGenerator : MonoBehaviour
             {'Q', Queen},
             {'K', King},
         };
-        players = new List<Transform>();
+        players = new List<Piece>();
     }
 
     public void UpdateGameData(GameData gameData)
@@ -52,29 +52,67 @@ public class LevelGenerator : MonoBehaviour
         // For the first time, generate tiles?
         if (tiles == null && gameData.tiles != null)
         {
+            GenerateTiles(gameData.tiles);
             tiles = gameData.tiles;
-            for (int y = 0; y < gameData.tiles.Count; y++)
-            {
-                for (int x = 0; x < gameData.tiles[y].Count; x++)
-                {
-                    AddTileAt(x, y, gameData.tiles[y][x] ?? 0);
-                }
+        }
+
+        UpdatePlayers(gameData.players);
+    }
+
+    void UpdatePlayers(List<PlayerData> playerData) {
+        // First mark all players as dead. Any one that's updated we'll undo this, leaving the ones left out as dead.
+        foreach (Piece player in players) {
+            player.Dead = true;
+        }
+
+        foreach (PlayerData playerDatum in playerData) {
+            Piece matchingPlayer = players.SingleOrDefault(p => p.Id == playerDatum.id);
+            if (matchingPlayer == null) {
+                // Add new player.
+                Piece piece = possiblePieces[playerDatum.type.letter];
+                Piece player = Instantiate(
+                    piece,
+                    playerDatum.x * Vector3.right
+                    + playerDatum.y * Vector3.forward
+                    + 0.1f * Vector3.up,
+                    Quaternion.identity);
+                player.GamePosition = new Vector2(playerDatum.x, playerDatum.y);
+                player.Id = playerDatum.id;
+                player.Type = (PieceType)playerDatum.type.letter;
+                players.Add(player);
+            }
+            else {
+                // Move the player
+                matchingPlayer.GamePosition = new Vector2(playerDatum.x, playerDatum.y);
+                matchingPlayer.Dead = false;
             }
         }
 
+        // Remove all the dead players?
+        foreach (Piece player in players) {
+            if (player.Dead) {
+                Destroy(player.gameObject);
+            }
+        }
+        players = players.Where(p => !p.Dead).ToList();
+    }
+
+    void ClearPlayers() {
         // First lets remove the old ones?? (For now)
-        foreach (Transform player in players)
+        foreach (Piece player in players)
         {
             Destroy(player.gameObject);
         }
         players.Clear();
+    }
 
-        // Update the players
-        foreach (PlayerData playerData in gameData.players)
+    void GenerateTiles(List<List<int?>> tiles) {
+        for (int y = 0; y < tiles.Count; y++)
         {
-            Transform piece = possiblePieces[playerData.type.letter];
-            Transform player = Instantiate(piece, playerData.x * Vector3.right + playerData.y * Vector3.forward + 0.1f * Vector3.up, Quaternion.identity);
-            players.Add(player);
+            for (int x = 0; x < tiles[y].Count; x++)
+            {
+                AddTileAt(x, y, tiles[y][x] ?? 0);
+            }
         }
     }
 
@@ -98,10 +136,10 @@ public class LevelGenerator : MonoBehaviour
         // Update camera to center of players
         if (players.Count > 0)
         {
-            float minX = players.Min(p => p.position.x);
-            float maxX = players.Max(p => p.position.x);
-            float minZ = players.Min(p => p.position.z);
-            float maxZ = players.Max(p => p.position.z);
+            float minX = players.Min(p => p.transform.position.x);
+            float maxX = players.Max(p => p.transform.position.x);
+            float minZ = players.Min(p => p.transform.position.z);
+            float maxZ = players.Max(p => p.transform.position.z);
             Vector3 newPosition = new Vector3(
                 (minX + maxX) / 2,
                 camera.transform.position.y,

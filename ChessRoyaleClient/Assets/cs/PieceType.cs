@@ -1,4 +1,9 @@
 ﻿public enum PieceType
 {
-    Pawn, Rook, Knight, Bishop, Queen, King
+    Pawn='P',
+    Rook='R',
+    Knight='N',
+    Bishop='B',
+    Queen='Q',
+    King='K',
 }

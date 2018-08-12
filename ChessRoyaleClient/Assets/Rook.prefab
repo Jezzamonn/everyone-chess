@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4442699655149400}
+  - component: {fileID: 114944593391588580}
   m_Layer: 0
   m_Name: Rook
   m_TagString: Untagged
@@ -96,6 +97,21 @@ MonoBehaviour:
     wrapMode: 1
     startFrame: 0
     useUnscaledTime: 0
+--- !u!114 &114944593391588580
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1402312417558828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09578978c882243888b75aa4ad31d18f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 1
+  Name: 
+  Id: 0
+  GamePosition: {x: 0, y: 0}
 --- !u!212 &212990770134458372
 SpriteRenderer:
   m_ObjectHideFlags: 1
