@@ -1,4 +1,4 @@
-import { TILE_SIZE, Tile, random } from "./contants";
+import { TILE_SIZE, Tile, random, Piece } from "./contants";
 
 /**
  * Main class for handling the game logic
@@ -35,6 +35,98 @@ export default class World {
 		this.players = this.players.filter(player => !player.dead);
 	}
 
+	updateAllPlayerMoves() {
+		this.players.forEach(player => this.updatePlayerMoves(player));
+	}
+
+	/**
+	 * @param {Player} player 
+	 */
+	updatePlayerMoves(player) {
+		player.moves = [];
+		switch (player.type) {
+			case Piece.PAWN: {
+				this.addMoveIfValid(player, 0, 1);
+			}
+			break;
+			case Piece.KING: {
+				this.addMoveIfValid(player,  0,  1);
+				this.addMoveIfValid(player,  0, -1);
+				this.addMoveIfValid(player,  1,  0);
+				this.addMoveIfValid(player, -1,  0);
+			}
+			break;
+			case Piece.BISHOP: {
+				this.addMovesInDirection(player,  1,  1, 8);
+				this.addMovesInDirection(player,  1, -1, 8);
+				this.addMovesInDirection(player, -1,  1, 8);
+				this.addMovesInDirection(player, -1, -1, 8);
+			}
+			break;
+			case Piece.ROOK: {
+				this.addMovesInDirection(player,  0,  1, 8);
+				this.addMovesInDirection(player,  0, -1, 8);
+				this.addMovesInDirection(player,  1,  0, 8);
+				this.addMovesInDirection(player, -1,  0, 8);
+			}
+			break;
+			case Piece.QUEEN: {
+				this.addMovesInDirection(player,  0,  1, 8);
+				this.addMovesInDirection(player,  0, -1, 8);
+				this.addMovesInDirection(player,  1,  0, 8);
+				this.addMovesInDirection(player, -1,  0, 8);
+
+				this.addMovesInDirection(player,  1,  1, 8);
+				this.addMovesInDirection(player,  1, -1, 8);
+				this.addMovesInDirection(player, -1,  1, 8);
+				this.addMovesInDirection(player, -1, -1, 8);
+			}
+			break;
+			case Piece.KNIGHT: {
+				this.addMoveIfValid(player,  1,  2);
+				this.addMoveIfValid(player,  1, -2);
+				this.addMoveIfValid(player, -1,  2);
+				this.addMoveIfValid(player, -1, -2);
+
+				this.addMoveIfValid(player,  2,  1);
+				this.addMoveIfValid(player,  2, -1);
+				this.addMoveIfValid(player, -2,  1);
+				this.addMoveIfValid(player, -2, -1);
+			}
+			break;
+		}
+	}
+
+	addMovesInDirection(player, xDir, yDir, maxDist) {
+		for (let i = 1; i <= maxDist; i ++) {
+			const keepMoving = this.addMoveIfValid(player, i * xDir, i * yDir);
+			if (!keepMoving) {
+				break;
+			}
+		}
+}
+
+	/**
+	 * @param {Player} player
+	 * @returns Whether more moves can be done in this direction
+	 */
+	addMoveIfValid(player, x, y) {
+		const newX = player.x + x;
+		const newY = player.y + y;
+		if (this.getTileAt(newX, newY) == Tile.EMPTY) {
+			return false;
+		}
+		// So, this means the move is valid so we can add it.
+		player.moves.push({'x': x, 'y': y});
+
+		// Now we need to check if we would run into a player, in that case we can't keep moving
+		const players = this.getPlayersAt(newX, newY);
+		if (players.length > 0) {
+			return false;
+		}
+		return true;
+	}
+
 	getPlayersAt(x, y) {
 		return this.players.filter(player => player.x == x && player.y == y)
 	}
@@ -60,6 +152,9 @@ export default class World {
 	}
 
 	getTileAt(x, y) {
+		if (y < 0 || y >= this.height || x < 0 || x >= this.width) {
+			return Tile.EMPTY;
+		}
 		return this.tiles[y][x];
 	}
 

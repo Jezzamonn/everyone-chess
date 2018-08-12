@@ -21,16 +21,17 @@ export default class DummyController {
         //     return;
         // }
 
-        if (random.bool(0.01)) {
-            // Clear all players
-            this.game.world.players = [];
-        }
-        else if (this.game.world.players.length == 0 || random.bool(0.1)) {
-            this.newPlaya();
-        }
-        else {
-            this.movePlaya();
-        }
+        // NOTHING!! HEHEHEHE
+        // if (random.bool(0.01)) {
+        //     // Clear all players
+        //     this.game.world.players = [];
+        // }
+        // else if (this.game.world.players.length == 0 || random.bool(0.1)) {
+        //     this.newPlaya();
+        // }
+        // else {
+        //     this.movePlaya();
+        // }
     }
     
     newPlaya() {
@@ -45,12 +46,10 @@ export default class DummyController {
     movePlaya() {
         this.ownedPlayers = this.ownedPlayers.filter(player => !player.dead);
         const player = random.pick(this.ownedPlayers);
-        const movement = random.pick([
-            {x: 1, y: 0},
-            {x: -1, y: 0},
-            {x: 0, y: 1},
-            {x: 0, y: -1},
-        ])
+        const movement = random.pick(player.moves);
+        if (movement == null) {
+            return;
+        }
         this.game.move(player.id, player.x + movement.x, player.y + movement.y);
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class GameData
@@ -17,6 +18,7 @@ public class PlayerData
     public int y;
     public string id;
     public PieceTypeData type;
+    public List<Vector2> moves;
 }
 
 [Serializable]

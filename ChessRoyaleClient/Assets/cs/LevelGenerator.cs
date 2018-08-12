@@ -81,10 +81,17 @@ public class LevelGenerator : MonoBehaviour
                 player.GamePosition = new Vector2(playerDatum.x, playerDatum.y);
                 player.Id = playerDatum.id;
                 player.Type = (PieceType)playerDatum.type.letter;
+                player.Moves = playerDatum.moves;
                 players.Add(player);
             }
             else {
+                if (matchingPlayer == playerController.Player)
+                {
+                    Debug.Log(playerDatum.moves);
+                }
                 // Move the player
+                matchingPlayer.Moves = playerDatum.moves;
+                // TODO: Update the type here maybe (like if a boy becomes a queen)
                 matchingPlayer.GamePosition = new Vector2(playerDatum.x, playerDatum.y);
                 matchingPlayer.Dead = false;
             }
@@ -98,11 +105,15 @@ public class LevelGenerator : MonoBehaviour
         }
         players = players.Where(p => !p.Dead).ToList();
 
+        // Update player controller
+
         Piece controlledPlayer = players.SingleOrDefault(p => p.Id == playerController.Id);
         if (controlledPlayer != null) {
             // Should be ok to constantly set this?
             playerController.Player = controlledPlayer;
+            playerController.UpdateSquares();
         }
+
         // Update currently controlled player. Also works if destroyed, surprisingly
         if (playerController.Player == null) {
             // Request a new player?

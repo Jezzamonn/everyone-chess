@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Add logic for spectating.
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public SelectSquare SelectSquare;
     public Piece Player;
@@ -12,28 +13,39 @@ public class PlayerController : MonoBehaviour {
     List<SelectSquare> selectSquares = new List<SelectSquare>();
     private SocketIoClient socketBoy;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         socketBoy = FindObjectOfType<SocketIoClient>();
         AddSquares();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Player) {
-            transform.position = Player.transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Player == null)
+        {
+            return;
         }
-	}
+        transform.position = Player.transform.position;
+    }
 
-    void AddSquares() {
-        List<Vector2> moves = new List<Vector2>{
-            new Vector2(0, 1),
-            new Vector2(0, -1),
-            new Vector2(-1, 0),
-            new Vector2(1, 0),
-        };
+    public void UpdateSquares() {
+        // TODO: Optimize by pooling these bad boys
+        ClearSquares();
+        AddSquares();
+    }
 
-        foreach (Vector2 move in moves) {
+    void AddSquares()
+    {
+        if (Player == null)
+        {
+            return;
+        }
+
+        foreach (Vector2 move in Player.Moves)
+        {
+            Debug.Log(string.Format("{0} {1}", move.x, move.y));
             SelectSquare square = Instantiate(
                 SelectSquare,
                 transform.position + move.x * Vector3.right + move.y * Vector3.forward,
@@ -42,17 +54,21 @@ public class PlayerController : MonoBehaviour {
             square.transform.parent = transform;
             square.Controller = this;
             square.CorrespondingMove = move;
+            selectSquares.Add(square);
         }
     }
 
-    void ClearSquares() {
-        foreach (SelectSquare square in selectSquares) {
+    void ClearSquares()
+    {
+        foreach (SelectSquare square in selectSquares)
+        {
             Destroy(square.gameObject);
         }
         selectSquares.Clear();
     }
 
-    public void DoMove(Vector2 move) {
+    public void DoMove(Vector2 move)
+    {
         // convert to global thingo
         Vector2 nextPosition = Player.GamePosition + move;
         socketBoy.DoMove(Player.Id, nextPosition);

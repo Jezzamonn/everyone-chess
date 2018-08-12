@@ -12,6 +12,8 @@ export default class Player {
         this.y = y;
         this.type = type;
         this.dead = false;
+        // Potential moves that could be made.
+        this.moves = [];
 	}
 
 	/**

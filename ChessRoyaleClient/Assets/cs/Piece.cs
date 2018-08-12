@@ -8,6 +8,7 @@ public class Piece : MonoBehaviour {
     public string Name;
     public string Id;
     public bool Dead;
+    public List<Vector2> Moves;
 
     // We gonna slurp to this one
     public Vector2 GamePosition;

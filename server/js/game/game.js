@@ -29,6 +29,7 @@ export default class Game {
 			}
 		}
 		this.world.removeDeadPlayers();
+		this.world.updateAllPlayerMoves();
 	}
 
 	addPlayer(id) {
@@ -53,6 +54,8 @@ export default class Game {
 				random.pick([Piece.PAWN, Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
 			);
 			this.world.players.push(newPlayer);
+
+			this.world.updateAllPlayerMoves();
 
 			return newPlayer;
 		}
