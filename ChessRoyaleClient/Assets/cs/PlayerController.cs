@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
 
         foreach (Vector2 move in Player.Moves)
         {
-            Debug.Log(string.Format("{0} {1}", move.x, move.y));
             SelectSquare square = Instantiate(
                 SelectSquare,
                 transform.position + move.x * Vector3.right + move.y * Vector3.forward,

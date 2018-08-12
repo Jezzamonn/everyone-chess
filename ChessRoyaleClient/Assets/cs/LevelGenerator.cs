@@ -19,6 +19,9 @@ public class LevelGenerator : MonoBehaviour
     public Piece Queen;
     public Piece King;
 
+    public Transform Splode;
+    public Transform Boosh;
+
     // TODO: replace w/ Piece type
     private Dictionary<char, Piece> possiblePieces;
 
@@ -76,7 +79,7 @@ public class LevelGenerator : MonoBehaviour
                     piece,
                     playerDatum.x * Vector3.right
                     + playerDatum.y * Vector3.forward
-                    + 0.1f * Vector3.up,
+                    + 0.2f * Vector3.up,
                     Quaternion.identity);
                 player.GamePosition = new Vector2(playerDatum.x, playerDatum.y);
                 player.Id = playerDatum.id;
@@ -100,6 +103,21 @@ public class LevelGenerator : MonoBehaviour
         // Remove all the dead players?
         foreach (Piece player in players) {
             if (player.Dead) {
+                // Do a splosion!!!
+                Transform sploSplo = Instantiate(
+                    Splode,
+                    player.transform.position + 0.05f * Vector3.down,
+                    Quaternion.identity);
+                // RIP
+                Destroy(sploSplo.gameObject, 0.5f);
+                // Do a splosion!!!
+                Transform booshBoosh = Instantiate(
+                    Boosh,
+                    player.transform.position + 0.05f * Vector3.down,
+                    Quaternion.identity);
+                // RIP
+                Destroy(booshBoosh.gameObject, 2f);
+
                 Destroy(player.gameObject);
             }
         }

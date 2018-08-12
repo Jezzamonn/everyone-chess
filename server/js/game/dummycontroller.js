@@ -21,17 +21,16 @@ export default class DummyController {
         //     return;
         // }
 
-        // NOTHING!! HEHEHEHE
         // if (random.bool(0.01)) {
         //     // Clear all players
         //     this.game.world.players = [];
         // }
-        // else if (this.game.world.players.length == 0 || random.bool(0.1)) {
-        //     this.newPlaya();
-        // }
-        // else {
-        //     this.movePlaya();
-        // }
+        if (this.game.world.players.length == 0 || random.bool(0.1)) {
+            this.newPlaya();
+        }
+        else {
+            this.movePlaya();
+        }
     }
     
     newPlaya() {

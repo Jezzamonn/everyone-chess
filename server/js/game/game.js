@@ -51,7 +51,8 @@ export default class Game {
 				id,
 				x,
 				y,
-				random.pick([Piece.PAWN, Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
+				// Don't spawn pawns (yet) because they're silly
+				random.pick([Piece.KNIGHT, Piece.ROOK, Piece.BISHOP, Piece.QUEEN, Piece.KING])
 			);
 			this.world.players.push(newPlayer);
 
