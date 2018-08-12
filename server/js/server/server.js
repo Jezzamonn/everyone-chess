@@ -23,7 +23,7 @@ let controller = new DummyController(game);
 
 setInterval(
     () => {
-        controller.newPlaya();
+        controller.doAction();
         console.log(game.toString());
         io.sockets.emit('world-update', game.world.toObject());
     }, 

@@ -9,13 +9,25 @@ export default class DummyController {
 	constructor(game) {
         this.game = game;
         this.lastIndex = 0;
+
+        this.waitCount = 0;
+    }
+
+    doAction() {
+        // if (this.waitCount < 20) {
+        //     this.waitCount ++;
+        //     return;
+        // }
+
+        if (this.game.world.players.length == 0 || random.bool(0.1)) {
+            this.newPlaya();
+        }
+        else {
+            this.movePlaya();
+        }
     }
     
     newPlaya() {
-        if (this.lastIndex < 20) {
-            this.lastIndex ++;
-            return;
-        }
         const newPlayer = new Player(
             this.lastIndex,
             random.integer(0, this.game.world.width-1),
@@ -29,6 +41,17 @@ export default class DummyController {
         this.game.world.removeDeadPlayers();
 
         this.game.world.players.push(newPlayer);
+    }
+
+    movePlaya() {
+        const player = random.pick(this.game.world.players);
+        const movement = random.pick([
+            {x: 1, y: 0},
+            {x: -1, y: 0},
+            {x: 0, y: 1},
+            {x: 0, y: -1},
+        ])
+        this.game.move(player.id, player.x + movement.x, player.y + movement.y);
     }
 
 }
