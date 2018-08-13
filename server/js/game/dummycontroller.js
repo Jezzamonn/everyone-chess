@@ -45,6 +45,9 @@ export default class DummyController {
     movePlaya() {
         this.ownedPlayers = this.ownedPlayers.filter(player => !player.dead);
         const player = random.pick(this.ownedPlayers);
+        if (player == null) {
+            return;
+        }
         const movement = random.pick(player.moves);
         if (movement == null) {
             return;
