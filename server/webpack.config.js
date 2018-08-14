@@ -20,6 +20,11 @@ var serverConfig = {
         ]
     },
     target: 'node',
+    // Needed to stop webpack from mangling some node things
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
     externals: [nodeExternals({
         modulesFromFile: true
     })],

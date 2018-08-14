@@ -7,7 +7,8 @@ using Newtonsoft.Json;
 
 public class SocketIoClient : MonoBehaviour
 {
-    public string serverURL = "http://localhost:3000";
+    // DON'T TOUCH THIS DARK, TWISTED VARIABLE, EDIT IT IN THE GAME EDITOR YOU JERK
+    public string serverURL = "";
 
     protected Socket socket = null;
     public GameData GameData;

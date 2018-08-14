@@ -5,14 +5,29 @@
 import express from 'express';
 import http from 'http';
 import SocketIO from 'socket.io';
-import compression from 'compression';
+import path from 'path';
 
 import Game from '../game/game';
 import DummyController from '../game/dummycontroller';
 
 let app = express();
+let port = process.env.PORT || 3000;
+app.set('port', port);
 let server = http.Server(app);
 let io = new SocketIO(server);
+
+// Not sure if necessary but we're going to return a html just in case
+app.get('/', function(req, res){
+
+    // send the debug.html file for all requests
+    const htmlPath = path.resolve(__dirname + '/../debug.html');
+    res.sendFile(htmlPath);
+  
+});
+
+server.listen(port, function(){
+    console.log('listening on *:' + port);
+});
 
 // TODO: Socket io somehow?
 
@@ -42,12 +57,8 @@ io.on('connection', (socket) => {
 setInterval(
     () => {
         controller.doAction();
-        console.log(game.toString());
+        // console.log(game.toString());
         io.sockets.emit('world-update', game.world.toObject());
     }, 
     500
 );
-
-server.listen(3000, function(){
-  console.log('listening on *:3000');
-});
